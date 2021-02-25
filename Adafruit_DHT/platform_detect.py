@@ -28,8 +28,8 @@ import platform
 import re
 
 # Platform identification constants.
-UNKNOWN          = 0
-RASPBERRY_PI     = 1
+UNKNOWN = 0
+RASPBERRY_PI = 1
 BEAGLEBONE_BLACK = 2
 
 
@@ -66,7 +66,8 @@ def pi_revision():
         for line in infile:
             # Match a line of the form "Revision : 0002" while ignoring extra
             # info in front of the revsion (like 1000 when the Pi was over-volted).
-            match = re.match('Revision\s+:\s+.*(\w{4})$', line, flags=re.IGNORECASE)
+            match = re.match(
+                'Revision\s+:\s+.*(\w{4})$', line, flags=re.IGNORECASE)
             if match and match.group(1) in ['0000', '0002', '0003']:
                 # Return revision 1 if revision ends with 0000, 0002 or 0003.
                 return 1
@@ -86,8 +87,9 @@ def pi_version():
     # Check /proc/cpuinfo for the Hardware field value.
     # 2708 is pi 1
     # 2709 is pi 2
-    # 2835 is pi 3 or pi 4
+    # 2835 is pi 3
     # 2837 is pi 3b+
+    # 2711 is pi 4b
     # Anything else is not a pi.
     with open('/proc/cpuinfo', 'r') as infile:
         cpuinfo = infile.read()
@@ -104,11 +106,14 @@ def pi_version():
         # Pi 2
         return 2
     elif match.group(1) == 'BCM2835':
-        # Pi 3 or Pi 4
+        # Pi 3
         return 3
     elif match.group(1) == 'BCM2837':
         # Pi 3b+
         return 3
+    elif match.group(1) == 'BCM2711':
+        # Pi 4b
+        return 4
     else:
         # Something else, not a pi.
         return None

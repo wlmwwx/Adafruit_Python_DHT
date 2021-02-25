@@ -25,6 +25,7 @@ def is_binary_install():
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 # Check if an explicit platform was chosen with a command line parameter.
 # Kind of hacky to manipulate the argument list before calling setup, but it's
 # the best simple option for adding optional config to the setup.
@@ -59,29 +60,41 @@ elif platform == platform_detect.RASPBERRY_PI:
     # Build the right extension depending on the Pi version.
     if pi_version == 1:
         extensions.append(Extension("Adafruit_DHT.Raspberry_Pi_Driver",
-                                    ["source/_Raspberry_Pi_Driver.c", "source/common_dht_read.c", "source/Raspberry_Pi/pi_dht_read.c", "source/Raspberry_Pi/pi_mmio.c"],
+                                    ["source/_Raspberry_Pi_Driver.c", "source/common_dht_read.c",
+                                        "source/Raspberry_Pi/pi_dht_read.c", "source/Raspberry_Pi/pi_mmio.c"],
                                     libraries=['rt'],
                                     extra_compile_args=['-std=gnu99']))
     elif pi_version == 2:
         extensions.append(Extension("Adafruit_DHT.Raspberry_Pi_2_Driver",
-                                    ["source/_Raspberry_Pi_2_Driver.c", "source/common_dht_read.c", "source/Raspberry_Pi_2/pi_2_dht_read.c", "source/Raspberry_Pi_2/pi_2_mmio.c"],
+                                    ["source/_Raspberry_Pi_2_Driver.c", "source/common_dht_read.c",
+                                        "source/Raspberry_Pi_2/pi_2_dht_read.c", "source/Raspberry_Pi_2/pi_2_mmio.c"],
                                     libraries=['rt'],
                                     extra_compile_args=['-std=gnu99']))
     elif pi_version == 3:
         extensions.append(Extension("Adafruit_DHT.Raspberry_Pi_2_Driver",
-                                    ["source/_Raspberry_Pi_2_Driver.c", "source/common_dht_read.c", "source/Raspberry_Pi_2/pi_2_dht_read.c", "source/Raspberry_Pi_2/pi_2_mmio.c"],
+                                    ["source/_Raspberry_Pi_2_Driver.c", "source/common_dht_read.c",
+                                        "source/Raspberry_Pi_2/pi_2_dht_read.c", "source/Raspberry_Pi_2/pi_2_mmio.c"],
+                                    libraries=['rt'],
+                                    extra_compile_args=['-std=gnu99']))
+    elif pi_version == 4:
+        extensions.append(Extension("Adafruit_DHT.Raspberry_Pi_2_Driver",
+                                    ["source/_Raspberry_Pi_2_Driver.c", "source/common_dht_read.c",
+                                        "source/Raspberry_Pi_2/pi_2_dht_read.c", "source/Raspberry_Pi_2/pi_2_mmio.c"],
                                     libraries=['rt'],
                                     extra_compile_args=['-std=gnu99']))
     else:
-        raise RuntimeError('Detected Pi version that has no appropriate driver available.')
+        raise RuntimeError(
+            'Detected Pi version that has no appropriate driver available.')
 elif platform == platform_detect.BEAGLEBONE_BLACK:
     extensions.append(Extension("Adafruit_DHT.Beaglebone_Black_Driver",
-                                ["source/_Beaglebone_Black_Driver.c", "source/common_dht_read.c", "source/Beaglebone_Black/bbb_dht_read.c", "source/Beaglebone_Black/bbb_mmio.c"],
+                                ["source/_Beaglebone_Black_Driver.c", "source/common_dht_read.c",
+                                    "source/Beaglebone_Black/bbb_dht_read.c", "source/Beaglebone_Black/bbb_mmio.c"],
                                 libraries=['rt'],
                                 extra_compile_args=['-std=gnu99']))
 elif platform == 'TEST':
     extensions.append(Extension("Adafruit_DHT.Test_Driver",
-                                ["source/_Test_Driver.c", "source/Test/test_dht_read.c"],
+                                ["source/_Test_Driver.c",
+                                    "source/Test/test_dht_read.c"],
                                 extra_compile_args=['-std=gnu99']))
 else:
     print('Could not detect if running on the Raspberry Pi or Beaglebone Black.  If this failure is unexpected, you can run again with --force-pi or --force-bbb parameter to force using the Raspberry Pi or Beaglebone Black respectively.')
@@ -97,14 +110,14 @@ classifiers = ['Development Status :: 4 - Beta',
                'Topic :: System :: Hardware']
 
 # Call setuptools setup function to install package.
-setup(name              = 'Adafruit_DHT',
-      version           = '1.4.0',
-      author            = 'Tony DiCola',
-      author_email      = 'tdicola@adafruit.com',
-      description       = 'Library to get readings from the DHT11, DHT22, and AM2302 humidity and temperature sensors on a Raspberry Pi or Beaglebone Black.',
-      long_description  = read('README.md'),
-      license           = 'MIT',
-      classifiers       = classifiers,
-      url               = 'https://github.com/adafruit/Adafruit_Python_DHT/',
-      packages          = find_packages(),
-      ext_modules       = extensions)
+setup(name='Adafruit_DHT',
+      version='1.4.0',
+      author='Tony DiCola',
+      author_email='tdicola@adafruit.com',
+      description='Library to get readings from the DHT11, DHT22, and AM2302 humidity and temperature sensors on a Raspberry Pi or Beaglebone Black.',
+      long_description=read('README.md'),
+      license='MIT',
+      classifiers=classifiers,
+      url='https://github.com/adafruit/Adafruit_Python_DHT/',
+      packages=find_packages(),
+      ext_modules=extensions)

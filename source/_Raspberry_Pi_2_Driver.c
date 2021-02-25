@@ -25,17 +25,20 @@
 // Wrap calling dht_read function and expose it as a DHT.read Python module & function.
 static PyObject* Raspberry_Pi_2_Driver_read(PyObject *self, PyObject *args)
 {
-	// Parse sensor and pin integer arguments.
+    // Parse sensor and pin integer arguments.
     int sensor, pin;
     if (!PyArg_ParseTuple(args, "ii", &sensor, &pin)) {
         return NULL;
     }
     // Call dht_read and return result code, humidity, and temperature.
     float humidity = 0, temperature = 0;
-    int result = pi_2_dht_read(sensor, pin, &humidity, &temperature);
+    int result = 0;
+    do{
+        result = pi_2_dht_read(sensor, pin, &humidity, &temperature);
+    }while(result != 0);   //主要修改逻辑，让C语言库专注读取数据，避免因为Python的延时（不让python参与底层数据的获取工作），直接返回结果
+    
     return Py_BuildValue("iff", result, humidity, temperature);
 }
-
 // Boilerplate python module method list and initialization functions below.
 
 static PyMethodDef module_methods[] = {
