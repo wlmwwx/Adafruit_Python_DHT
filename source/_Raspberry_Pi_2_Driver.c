@@ -33,9 +33,9 @@ static PyObject* Raspberry_Pi_2_Driver_read(PyObject *self, PyObject *args)
     // Call dht_read and return result code, humidity, and temperature.
     float humidity = 0, temperature = 0;
     int result = 0;
-    do{
-        result = pi_2_dht_read(sensor, pin, &humidity, &temperature);
-    }while(result != 0);   //主要修改逻辑，让C语言库专注读取数据，避免因为Python的延时（不让python参与底层数据的获取工作），直接返回结果
+    
+    result = pi_2_dht_read(sensor, pin, &humidity, &temperature);
+    
     
     return Py_BuildValue("iff", result, humidity, temperature);
 }

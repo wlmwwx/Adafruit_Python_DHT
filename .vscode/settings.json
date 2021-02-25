@@ -16,5 +16,12 @@
       "command": "extension.execute",
       "priority": 4
     }
-  ]
+  ],
+  "files.associations": {
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript",
+    "*.js": "javascriptreact",
+    "pi_2_dht_read.h": "c"
+  }
 }
